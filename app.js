@@ -29,7 +29,7 @@ var Blog = mongoose.model("Blog", blogSchema);
 
 // Routes
 
-// 1. standard GET
+// 1. standard index GET
 app.get("/", function(req,res){
 	res.redirect("/blogs");
 })
@@ -45,6 +45,26 @@ app.get("/blogs", function(req,res){
 	});
 	res.render("index");	
 });
+
+// NEW route
+app.get("/blogs/new", function(req,res){
+	res.render("new");	
+});
+
+// CREATE route
+app.post("/blogs", function(req, res){
+	// create blog
+	Blog.create(req.body.blog, function(err, newBlog){
+		if (err){
+			res.render("new");
+		}
+		else{
+			// redirect to index
+			res.redirect("/blogs");
+		}
+	})
+	
+})
 
 
 // Design will include: title, image, body, created date

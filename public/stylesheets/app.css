@@ -1,0 +1,9 @@
+/*make nav bar icon twice size*/
+icon {
+    font-size: 2em;
+}
+
+/*move blog text area down so that no overlapping*/
+.container.main {
+    margin-top: 7.0em;
+}
