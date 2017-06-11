@@ -1,0 +1,18 @@
+<!--include header from views/partials-->
+<% include ./partials/header %>
+
+<h1>Index Page !</h1>
+
+<!--loop through each blog object, show its contents(attributes)-->
+<%= blogs.forEach(function(blog){%>
+    <div>
+        <h2><%=blog.title%></h2>
+        <img src="<%=blog.image%>">
+        <span><%=blog.created%></span>
+        <p><%=blog.body%></p>
+    </div>
+
+<% }) %>
+
+<!--include footer from views/partials-->
+<% include ./partials/footer %>
