@@ -66,6 +66,17 @@ app.post("/blogs", function(req, res){
 	
 })
 
+// SHOW route
+app.get("/blogs/:id", function(req,res){
+	Blog.findByID(req.params.id, function(err, foundBlog){
+		if (err){
+			res.redirect("/blogs");
+		}
+		else {
+			res.render("show", {blog: foundBlog});
+		}
+	})
+})
 
 // Design will include: title, image, body, created date
 // Basic layout: add header, footer partials, semantic UI, simple Nav Bar
