@@ -1,18 +1,20 @@
-// load express, body-parser, mongoose, method-override
+// load express, body-parser, mongoose, method-override, express-sanitizer
 var express = require("express"),
 app = express(),
 bodyParser = require("body-parser"),
 mongoose = require("mongoose"),
+expressSanitizer = require("express-sanitizer"),
 methodOverride = require("method-override");
 
 // configure mongoose
 mongoose.connect("mongodb://localhost/blog-app");
 // set view engine as ejs
 app.set("view engine", "ejs");
-// set express static, body-parser, method-override
+// set express static, body-parser, method-override, express-sanitizer
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(expressSanitizer());
 
 app.listen(process.env.PORT, process.env.IP, function(){
 	console.log("Server Started");
@@ -30,8 +32,7 @@ var blogSchema = new mongoose.Schema({
 var Blog = mongoose.model("Blog", blogSchema);
 
 // Routes
-
-// 1. standard index GET
+// INDEX route
 app.get("/", function(req,res){
 	res.redirect("/blogs");
 })
@@ -55,7 +56,11 @@ app.get("/blogs/new", function(req,res){
 
 // CREATE route
 app.post("/blogs", function(req, res){
-	// create blog
+	// Sanitize blog content. req.body: body of post req. We only want to sanitize
+	// body in blog
+	req.body.blog.body = req.sanitize(req.body.blog.body)
+	
+	// create actual blog into DB
 	Blog.create(req.body.blog, function(err, newBlog){
 		if (err){
 			res.render("new");
@@ -94,6 +99,9 @@ app.get("/blogs/:id/edit", function(req,res){
 
 // UPDATE route
 app.put("/blogs/:id", function(req, res){
+	// Sanitize body content
+	req.body.blog.body = req.sanitize(req.body.blog.body)
+	
 	// take the id of url, find the blog, update it with new data
 	Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
 		if (err){
