@@ -12,6 +12,5 @@ Used Technology:
 Package Management: npm
 Front End: Semantic UI 
 Back End: Node, Express, body-parser, MongoDB
-Authentication: OAuth
 Security: express-sanitizer
 
