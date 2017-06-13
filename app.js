@@ -106,5 +106,19 @@ app.put("/blogs/:id", function(req, res){
 	})
 })
 
+// DELETE route
+app.delete("/blogs/:id", function(req, res){
+	// 1. destroy log; 2. redirect
+	Blog.findByIdAndRemove(req.params.id, function(err){
+		if (err){
+			res.redirect("/blogs");
+		}
+		else{
+			res.redirect("/blogs");
+		}
+	})
+})
+
+
 // Design will include: title, image, body, created date
 // Basic layout: add header, footer partials, semantic UI, simple Nav Bar
